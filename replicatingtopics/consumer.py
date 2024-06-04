@@ -1,3 +1,9 @@
+from confluent_kafka import Consumer
+consumer_conf = {'bootstrap.servers': 'localhost:9092',
+                 'group.id': 'foo',
+                 'auto.offset.reset': 'smallest'}
+consumer = Consumer(consumer_conf)
+
 def consume(consumer_object, topics):
     consumer_object.subscribe(topics)
     while True:
@@ -8,3 +14,11 @@ def consume(consumer_object, topics):
             print("Error: %s" % msg.error())
         else:
             print(msg.value().decode('utf-8'))
+
+
+try:
+    consume(consumer, 'b')
+except KeyboardInterrupt:
+    print("stopped consuming")
+finally:
+    consumer.close()
