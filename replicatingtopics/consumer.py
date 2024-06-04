@@ -1,8 +1,9 @@
 from confluent_kafka import Consumer
 consumer_conf = {'bootstrap.servers': 'localhost:9092',
-                 'group.id': 'foo',
+                 'group.id': 'testing_consumer',
                  'auto.offset.reset': 'smallest'}
 consumer = Consumer(consumer_conf)
+
 
 def consume(consumer_object, topics):
     consumer_object.subscribe(topics)
@@ -17,7 +18,7 @@ def consume(consumer_object, topics):
 
 
 try:
-    consume(consumer, 'b')
+    consume(consumer, ['b'])
 except KeyboardInterrupt:
     print("stopped consuming")
 finally:

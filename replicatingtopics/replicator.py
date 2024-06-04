@@ -2,7 +2,7 @@ from confluent_kafka import Consumer
 from confluent_kafka import Producer
 
 consumer_conf = {'bootstrap.servers': 'localhost:9092',
-                 'group.id': 'foo',
+                 'group.id': 'replicator_group',
                  'auto.offset.reset': 'smallest'}
 
 producer_conf = {'bootstrap.servers': 'localhost:9092',
@@ -12,8 +12,8 @@ producer = Producer(producer_conf)
 consumer = Consumer(consumer_conf)
 
 
-def replicate(consumer_obj, producer_obj, from_topic, to_topic):
-    consumer_obj.subscribe(from_topic)
+def replicate(consumer_obj, producer_obj, from_topics, to_topic):
+    consumer_obj.subscribe(from_topics)
     while True:
         msg = consumer_obj.poll(timeout=1)
         if msg is None:
@@ -26,7 +26,7 @@ def replicate(consumer_obj, producer_obj, from_topic, to_topic):
 
 
 try:
-    replicate(consumer, producer, 'a', 'b')
+    replicate(consumer, producer, ['a'], 'b')
 except KeyboardInterrupt:
     print("stopped consuming")
 finally:
