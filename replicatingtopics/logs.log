@@ -1,0 +1,2 @@
+Error: KafkaError{code=UNKNOWN_TOPIC_OR_PART,val=3,str="Subscribed topic not available: a: Broker: Unknown topic or partition"}
+Error: KafkaError{code=UNKNOWN_TOPIC_OR_PART,val=3,str="Subscribed topic not available: a: Broker: Unknown topic or partition"}
