@@ -1,13 +1,13 @@
-from confluent_kafka import Consumer
+from confluent_kafka import Producer
 from config import get_config
 from typing import Dict
 
 
-class ConsumerFactory:
-    def __init__(self, group_id: str):
-        self.group_id = group_id
+class ProducerFactory:
+    def __init__(self):
         self.conf = get_config('config.ini')
 
+    # helper function which returns dictionary
     def _create_conf_obj(self) -> Dict[str, str]:
         return {
             'bootstrap.servers': self.conf['kafka']['bootstrap_servers'],
@@ -15,11 +15,7 @@ class ConsumerFactory:
             'security.protocol': self.conf['kafka']['security_protocol'],
             'sasl.username': self.conf['kafka']['sasl_username'],
             'sasl.password': self.conf['kafka']['sasl_password'],
-            'group.id': self.group_id,
-            'auto.offset.reset': self.conf['consumer']['auto_offset_reset'],
         }
 
-    def get_consumer(self) -> Consumer:
-        return Consumer(self._create_conf_obj())
-
-
+    def get_producer(self) -> Producer:
+        return Producer(self._create_conf_obj())
