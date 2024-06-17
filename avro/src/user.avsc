@@ -7,12 +7,8 @@
             "type": "string"
         },
         {
-            "name": "favorite_number",
-            "type": "long"
-        },
-        {
-            "name": "favorite_color",
-            "type": "string"
+            "name": "age",
+            "type": "int"
         }
     ]
 }
