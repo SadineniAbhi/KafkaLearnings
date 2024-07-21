@@ -8,14 +8,15 @@ from read_schema import get_schema
 def main(topic: str, serializer: AvroSerializer, consumer: Consumer) -> None:
     consumer.subscribe([topic])
     while True:
-        msg = consumer.poll(timeout=1.0)
+        msg = consumer.poll(timeout=0.5)
         if msg is None:
             continue
         if msg.error():
             print(msg.error())
         else:
-            msg = msg.value()
-            print(serializer.deserialize(msg))
+            deserialized_msg = serializer.deserialize(msg.value())
+            print(type(deserialized_msg))
+
 
 
 if __name__ == "__main__":

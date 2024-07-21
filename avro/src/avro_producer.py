@@ -7,9 +7,9 @@ from read_schema import get_schema
 
 def main(topic: str, serializer: AvroSerializer, producer: Producer) -> None:
     records = [{"name": "abhi", "age": 19},
-               {"name": "x", "age": 20},
-               {"name": "y", "age": 21},
-               {"name": "z", "age": 22}]
+               {"name": "mock", "age": 20},
+               {"name": "big", "age": 21},
+               {"name": "small", "age": 22}]
 
     for record in records:
         serialized_record = serializer.serialize(record)
