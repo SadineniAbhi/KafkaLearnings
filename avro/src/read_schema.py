@@ -1,8 +1,6 @@
-import json
+import avro.schema
 
 
 def get_schema(file: str) -> dict:
-    with open(file) as f:
-        schema = f.read()
-    schema = json.loads(schema)
+    schema = avro.schema.parse(open(file).read())
     return schema

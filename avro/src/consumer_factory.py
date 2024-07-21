@@ -1,9 +1,9 @@
 from confluent_kafka import Consumer
 from config import get_config
 from typing import Dict
+import socket
 
-
-class ConsumerFactory:
+class ConfluentCloudConsumer:
     def __init__(self, group_id: str):
         self.group_id = group_id
         self.conf = get_config('config.ini')
@@ -22,5 +22,20 @@ class ConsumerFactory:
 
     def get_consumer(self) -> Consumer:
         return Consumer(self._create_conf_obj())
+    
 
+class LocalConsumer:
 
+    def __init__(self, group_id: str):
+        self.group_id = group_id
+        self.conf = get_config('config.ini')
+
+    def _create_conf_obj(self) -> Dict[str, str]:
+        return {
+            'bootstrap.servers': self.conf['local']['bootstrap_servers'],
+            'group.id': self.group_id,
+            'auto.offset.reset': self.conf['local']['auto_offset_reset'],
+        }
+
+    def get_consumer(self) -> Consumer:
+        return Consumer(self._create_conf_obj())

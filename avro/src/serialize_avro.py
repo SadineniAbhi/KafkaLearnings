@@ -1,5 +1,6 @@
-from io import BytesIO
-from fastavro import writer, reader
+import avro.schema
+import avro.io
+import io
 
 
 class AvroSerializer:
@@ -8,10 +9,17 @@ class AvroSerializer:
         self.schema = schema
 
     def serialize(self, record):
-        buffer = BytesIO()
-        writer(buffer, self.schema, [record])
-        return buffer.getvalue()
+        writer = avro.io.DatumWriter(self.schema)
+        bytes_writer = io.BytesIO()
+        encoder = avro.io.BinaryEncoder(bytes_writer)
+        writer.write(record, encoder)
+        raw_bytes = bytes_writer.getvalue()
+        return raw_bytes
 
     def deserialize(self, serialized_avro_msg):
-        buffer = BytesIO(serialized_avro_msg)
-        return [record for record in reader(buffer, self.schema)]
+        bytes_reader = io.BytesIO(serialized_avro_msg)
+        decoder = avro.io.BinaryDecoder(bytes_reader)
+        reader = avro.io.DatumReader(self.schema)
+        record = reader.read(decoder)
+        return record
+
